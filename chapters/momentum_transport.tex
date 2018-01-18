@@ -1,0 +1,210 @@
+\chapter{Momentum Transport}
+
+\section{基本数学知识}
+\subsection{Leibniz积分法则}
+
+给出了一个对积分变量为函数的积分求导的法则，右侧第一项解释了积分随时间的变化，二三两项区域内物理量的得失。
+
+\begin{equation}
+    \frac{d}{dt} \int_{a(t)}^{b(t)} \phi(x,t) dx = \int_{a(t)}^{b(t)} \frac{\partial \phi}{\partial t} dx + \phi(b(t),t) \frac{\partial b}{\partial t} - \phi(a(t),t)\frac{\partial a}{\partial t}
+\end{equation}
+
+对由面$ S(t) $包围的封闭三维空间$ V(t) $来讲，假设面的移动速度为$ \mathbf{v_s} $，有如下积分法则：
+
+\begin{equation}
+    \frac{d}{dt} \int_{V(t)} \phi dV = \int_{V(t)} \frac{\partial \phi}{\partial t} dV + \int_{S(t)} \phi(\mathbf{v_s}\cdot \mathbf{n}) dS
+\end{equation}
+
+若控制体不移动，则：
+
+\begin{equation}\label{Leibniz}
+\frac{d}{dt} \int_{V(t)} \phi dV = \int_{V(t)} \frac{\partial \phi}{\partial t} dV
+\end{equation}
+
+\subsection{Reynolds输送定理}
+Reynolds输送定理可用来定量地描述流场中流体性质的变化情形，譬如在一个控制容积(Control volume)之中含有某种流体。在经过一段时间之后，若控制容积中流体的总体性质B有所改变，则其变化必定是下列两种原因所造成的：
+
+(1)总体性质B可能会因为本身的特性或外在因素的影响而产生随时间的变化，譬如流体中含有某种化学物质，该物质会因化学反应造成其质量B的变化，$ dB/dt $即为该物质质量的变化率。又譬如B为流体的动量，在受到外力的状况下，流体的动量会有所改变；
+
+(2)因为流体流动所造成的变化：当流体流经控制容积时，会带入或带出一部份的物质。当流出控制容积的总体性质大于流入量，则净流出量为正，会造成控制容积之中该总体性质的减少；反之，流入量大于流出量便会造成该总体性质的增加。
+
+
+对固定控制体来讲：
+
+\begin{equation}
+    \left( \frac{dB}{dt} \right)_{MV} = \int_V \frac{\partial}{\partial t}(b\rho)dV + \int_S b\rho\mathbf{v\cdot n} dS
+\end{equation}
+
+运用Gauss散度定理简化形式：
+
+\begin{equation}
+    \left( \frac{dB}{dt} \right)_{MV} = \int_V \left[ \frac{\partial}{\partial t}(\rho b) + \rho b \nabla\cdot(\mathbf{v}) \right]
+\end{equation}
+
+\section{无量纲数}
+
+Reynolds Number，定义为惯性力和粘性力的比：
+
+\[ Re = \frac{\rho UL}{\mu} \]
+
+Grashof Number，定义为浮力和粘性力的比，$ \upsilon $为动力粘度：
+
+\[ Gr = \frac{g\beta\Delta TL^3}{\upsilon^2} \]
+
+Prandtl Number，定义为动量扩散率和热扩散率之比（也代表流动边界层和热边界层之比），$ k $为导热系数，$ \alpha $为热扩散系数，$ \upsilon $为动力粘度。随着$ Pr $增大，热对流的增大速率逐渐比热传导大：
+
+\[ Pr = \frac{\mu c_p}{k} = \frac{\mu/\rho}{k/\rho c_p} = \frac{\upsilon}{\alpha} \]
+
+P\'{e}clet Number，定义为对流传递速率与扩散传递速率之比，$ D $为质量扩散系数：
+
+\[ Pe =
+\begin{cases}
+\frac{\rho ULc_p}{k} = \frac{UL}{\alpha} = RePr & \text{for heat transfer}\\
+\frac{UL}{D} = ReSc & \text{for mass transfer}
+\end{cases}
+\]
+
+Schmidt Number，定义为动量扩散率和质量扩散率之比：
+
+\[ Sc = \frac{\upsilon}{D} \]
+
+Nusselt Number，定义为对流和热传导之比：
+
+\[Nu = \frac{hL}{k}\]
+
+Mach Number，定义为速度和介质中声速之比：
+
+\[ M = \frac{|\mathbf{v}|}{a} \]
+
+声速由下式计算，其中$ \gamma=c_p/c_v $为比气体常数：
+
+\[a=\sqrt{\gamma\left( \frac{\partial p}{\partial \rho} \right)_T}\]
+
+对理想气体而言，简化如下：
+
+\[a=\sqrt{\gamma RT}\]
+
+Eckert Number，动能和焓之比。如果$ Ec\ll 1 $，能量方程中的粘性耗散和压力功就可以忽略：
+
+\[Ec=\frac{\mathbf{v\cdot v}}{c_p\Delta T}\]
+
+Weber Number，定义为惯性力和表面张力之比：
+
+\[We=\frac{\rho U^2 L}{\sigma}\]
+
+\section{随体导数}
+微元中的物理量$ \phi $是位置和时间的函数，单位质量的物理量的变化率$ D\phi/Dt $定义为：
+
+\begin{equation}
+\frac{D\phi}{Dt} = \frac{\partial \phi}{\partial t}+\frac{\partial \phi}{\partial x}\frac{dx}{dt} + \frac{\partial \phi}{\partial y}\frac{dy}{dt} + \frac{\partial \phi}{\partial z}\frac{dz}{dt}=\frac{\partial \phi}{\partial t}+u\frac{\partial \phi}{\partial x}+v\frac{\partial \phi}{\partial y}+w\frac{\partial \phi}{\partial z}=\frac{\partial \phi}{\partial t}+\bm{u}\cdot \nabla \phi
+\end{equation}
+
+守恒方程的通用形式为：
+
+\begin{equation}
+\frac{\partial \rho\phi}{\partial t}+\nabla\cdot(\rho\phi\bm{u}) = 0
+\end{equation}
+
+\section{连续性方程}
+由随体导数很容易推导关于物理量密度$ \rho $的守恒方程：
+
+\begin{gather}
+\frac{\partial \rho}{\partial t} + \frac{\partial \rho u}{\partial x} + \frac{\partial \rho v}{\partial y} + \frac{\partial \rho w}{\partial z} = 0 \\
+\frac{\partial \rho}{\partial t} + \nabla \cdot (\rho\mathbf{U}) = 0
+\end{gather}
+
+\section{动量传递}
+由随体导数很容易推导关于物理量速度$ \bm{u} $的守恒方程，其中$ \tau $为应力张量，$ F $为体积力：
+
+\begin{equation}
+\rho \frac{\partial \bm{u}}{\partial t} + \rho\nabla\cdot(\bm{uu}) = -\nabla p + \tau + F
+\end{equation}
+
+动量方程中主要包括两种力，表面力（压力、粘性力）和体积力（重力等）。
+
+\section{带扩散的物理量的一般守恒方程}
+
+增加率+净流出=扩散增加率+源项
+
+\begin{equation}
+\frac{\partial (\rho\phi)}{\partial t} + \nabla(\rho\phi\bm{u}) = \nabla(\Gamma\nabla\phi) + S
+\end{equation}
+
+在有限体积法中，会在整个控制体内对方程积分：
+
+\begin{equation}
+\int_{CV}\frac{\partial (\rho\phi)}{\partial t}dV + \int_{CV}\nabla(\rho\phi\bm{u})dV = \int_{CV}\nabla(\Gamma\nabla\phi)dV + \int_{CV}SdV
+\end{equation}
+
+然后用Gauss散度定理将对流-扩散项从体积分改为面积分，同时用\autoref{Leibniz}所示的Leibniz积分法则改写第一项。
+
+\begin{equation}
+\frac{\partial}{\partial t}\left(\int_{CV}\rho\phi dV\right) + \int_{A}\bm{n}\cdot(\rho\phi\bm{u})dV = \int_{A}\bm{n}\cdot(\Gamma\nabla\phi)dV + \int_{CV}SdV
+\end{equation}
+
+有限体积法的积分方程具有非常自然的物理意义，左边第一项表示物理量$ \phi $在控制体中的变化率，坐标第二项表示控制体面上的净流出量（即对流项），右边第一项表示扩散引起的增量，最后一项为源项。
+
+对于稳态问题，时间导数为0：
+
+\begin{equation}
+\int_{A}\bm{n}\cdot(\rho\phi\bm{u})dV = \int_{A}\bm{n}\cdot(\Gamma\nabla\phi)dV + \int_{CV}SdV
+\end{equation}
+
+对瞬态问题，需要在每一个时间步内进行积分：
+
+\begin{equation}
+\int_{\Delta t}\frac{\partial}{\partial t}\left(\int_{CV}\rho\phi dV\right) + \int_{\Delta t}\int_{A}\bm{n}\cdot(\rho\phi\bm{u})dV = \int_{\Delta t}\int_{A}\bm{n}\cdot(\Gamma\nabla\phi)dV + \int_{\Delta t}\int_{CV}SdV
+\end{equation}
+
+\section{自然对流 natural convection}
+
+自然对流控制方程：
+
+
+在强制对流里面，使用$Re$数来描述流动行为，其表示惯性力（the inertial
+forces）与粘性力（the viscous forces）之比。对于内部驱动的流动行为——比如自然对流，初始速度未知，无法使用$Re$数表征流动行为。通常用The Grashof number来描述自然对流，其表示流体浮力与粘性力的比值（It describes the ratio of the time scales for viscous diffusion in the fluid and the internal driving force (the buoyancy force).）。当$Gr>10^9$时，自然对流转变为湍流。
+
+对湿空气来讲，密度依赖于温度和含水率，$Gr$数定义如下：
+\begin{equation}
+    Gr = \frac{g\rho (\rho_{ext} - \rho_s) L^3}{\mu^2}
+\end{equation}
+
+$\rho_s$代表热表面的密度（solid），$\rho_{ext}$代表the free stream density，$\rho$代表流体密度。
+
+对干空气来讲，密度仅依赖于温度，$Gr$数定义如下：
+\begin{equation}
+    Gr = \frac{g\beta (T_s - T_{ext})L^3}{(\mu/\rho)^2}
+\end{equation}
+
+通常，$\mu/\rho=\upsilon$，定义为动力粘度。
+
+$\beta$为热膨胀系数（the coefficient of thermal expansion），定义为：
+\begin{equation}
+    \beta = -\frac{1}{\rho} \left( \frac{\partial \rho}{\partial T} \right)_T
+\end{equation}
+
+对理想气体而言，$\beta$简化为：
+\begin{equation}
+    \beta = \frac{1}{T}
+\end{equation}
+
+同样，The Rayleigh number也可以用来表征自然对流，$Ra$数定义如下：
+\begin{equation}
+    Ra = GrPr =\frac{g\beta\rho^2 C_p |T-T_{ext}|L^3}{k\mu}
+\end{equation}
+
+其中，$Pr$为The Prandtl number，定义为：
+\begin{equation}
+    Pr = \frac{\upsilon}{\alpha} = \frac{c_p\mu}{k}
+\end{equation}
+
+$\alpha$为热扩散系数，定义为：
+\begin{equation}
+    \alpha = \frac{k}{\rho c_p}
+\end{equation}
+
+
+若密度仅仅依赖于温度，$Ra$数定义如下：
+\begin{equation}
+    Ra = \frac{g\rho C_p |\rho_{ext}-\rho_s|L^3}{k\mu}
+\end{equation}

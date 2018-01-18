@@ -1,0 +1,109 @@
+\chapter{Mass Transport}
+
+\section{浓物质传递}
+由$i$个物质构成的，有$j$个反应的反应流、浓物质系统的质量守恒方程为：
+
+\begin{equation}
+    \frac{\partial}{\partial t}(\rho\omega_i) + \nabla\cdot(\rho\omega_i\bm{u}) = -\nabla\cdot\bm{j}_i + R_i
+\end{equation}
+
+其中$\omega_i$表示$i$物质的质量分数，$\bm{j}_i$为质量通量（mass flux）源项，表示分子扩散、电场迁移、热扩散等引起的通量。
+
+\subsection{Maxwell-Stefan Description}
+\textbf{Maxwell-Stefan}是最详细的扩散模型，计算消耗最大，是一个扩散占主导的模型。多组分混合物中，相对于质量平均速度的质量通量可使用通用的Fick方程定义，总的扩散通量依赖于物质的浓度梯度、温度、压力和外部驱动力：
+
+\begin{equation}
+    \bm{j}_i = -\rho\omega_i\sum_{k=1}^{Q} \tilde{D}_{ik} \bm{d}_{k} - D_i^T\nabla\ln T
+\end{equation}
+
+$\tilde{D}_{ik}$是多组分Fick扩散系数，$D_i^T$是热扩散系数，$\bm{d}_k$是扩散驱动力。对理想气体而言，扩散驱动力可表示为：
+
+\begin{equation}
+    \bm{d}_k = \frac{1}{cR_gT} \left[ \nabla p_k-\omega_k\nabla p - \rho_k \bm{g}_k +\omega_k \sum_{l=1}^{Q} \rho_l \bm{g}_l \right]
+\end{equation}
+
+其中，$p_k$为气体分压，$\rho_k$为物质$k$的密度，$\bm{g}_k$为作用于物质$k$的外部作用力（例如电场）。
+
+\subsection{Mixture-Averaged Approximation}
+\textbf{Mixture-Averaged}模型假定分压和温度变化对多组分扩散的影响可以忽略，假定由分子扩散引起的质量通量符合Fick定律，则分子扩散通量正比于摩尔分数的梯度，定义为：
+
+\begin{gather}
+    \bm{j}_{md,i} = -\rho_i D_i^m \frac{\nabla x_i}{x_i} \\
+    \bm{j}_{md,i} = -\left( \rho D_i^m \nabla \omega_i + \rho \omega_i D_i^m \frac{\nabla M}{M} \right) \\
+    \rho_i = \rho\omega_i, x_i = \frac{\omega_i}{M_i} M
+\end{gather}
+
+其中，混合物平均扩散系数定义为：
+
+\begin{equation}
+    D_i^m = \frac{1-\omega_i}{\sum_{k\neq i}^N \frac{x_k}{D_{ik}}}
+\end{equation}
+
+\subsection{Fick's law}
+\textbf{Fick's law}是一个通用的模型，通常用来描述分子扩散不占主导地位的系统，不需要多组分扩散系数，计算消耗最低。
+
+\subsection{热扩散 Thermal Diffusion}
+
+由温差引起的扩散称为\textbf{Soret效应}，当混合物温差大、分子质量相差大时会产生热扩散，分子质量高的物质在低温区域积累，分子质量低的物质在高温处积累。多组分混合物所有热扩散系数为0：
+
+\begin{equation}
+    \sum_{i=1}^Q D_i^T = 0
+\end{equation}
+
+\section{多组分扩散系数}
+Maxwell-Stefan扩散系数$ D_{ik} $，Fick扩散系数$ D_w^F $，热扩散系数$ D_w^T $。
+
+二元Fick扩散系数是对称的（symmetric），其和Maxwell-Stefan扩散系数$D_{ik}$可以相互转换。
+
+\begin{equation}
+    \tilde{D}_{ik} = \tilde{D}_{ki}
+\end{equation}
+
+\section{化学吸附}
+化学吸附只能发生在固体表面的活性位点$ \sigma $上，定义被A覆盖的活性位点与总活性位点之比为吸附率，剩下的为空位率：
+
+\begin{gather}
+    \theta_A = \frac{\sigma_A}{\sigma} \\
+    \theta_V = 1-\theta_A
+\end{gather}
+
+分子的吸附速率$ r_{ads} $与表面空位率和气体分压成正比，解吸率与表面占有率成正比：
+
+\begin{gather}
+    r_{ads} = k_{ads}p_A\theta_V \\
+    r_{des} = k_{des}\theta_A
+\end{gather}
+
+达到吸附平衡时，表观速率$ r=r_{ads}-r_{des}=0 $，有：
+
+\[k_{ads}p_A(1-\theta_A)=k_{des}\theta_A\]
+
+令$ K_A=\frac{k_{ads}}{k_{des}} $，称为\textbf{吸附平衡常数}，得\autoref{Langmuir}，称为Langmuir吸附等温式：
+
+\begin{equation}\label{Langmuir}
+    \theta_A = \frac{K_Ap_A}{1+K_Ap_A}
+\end{equation}
+
+为了根据本体浓度$ c $和表面浓度$ cs $来建立传递和反应方程，执行以下代换，其中$ \Gamma_s $为表面得最大吸附浓度：
+
+\[\theta_A = c_s/\Gamma_s\]
+\[p_A=cRT\]
+
+将得到下式，粗体为吸附和脱附反应速率常数。
+
+\begin{gather}
+    r_{ads} = \bm{\frac{k_{ads}RT}{\Gamma_s}}c(\Gamma_s-c_s)\\
+    r_{des} = \bm{\frac{k_{des}}{\Gamma_s}}c_s
+\end{gather}
+
+对于表面来讲，涉及表面扩散、吸附脱附、表面反应，质量守恒为：
+
+\begin{equation}
+    \frac{\partial c_s}{\partial t}+\nabla\cdot(-D_s\nabla c_s) = r_{ads}-r_{des}=R
+\end{equation}
+
+本体溶液的质量守恒用经典的对流扩散方程描述：
+
+\begin{equation}
+    \frac{\partial c}{\partial t} + \nabla\cdot(-D\nabla c+\bm{u}c) = R
+\end{equation}

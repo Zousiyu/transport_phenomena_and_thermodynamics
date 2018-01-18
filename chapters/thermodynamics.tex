@@ -1,0 +1,107 @@
+\chapter{Thermodynamics}
+
+经典理想气体状态方程：
+\begin{equation}
+\label{idealGas}
+pV=nRT
+\end{equation}
+
+从\autoref{idealGas}推导出\textbf{理想气体密度公式}：
+\begin{equation}
+\rho = \frac{Mp}{RT}
+\end{equation}
+
+比气体常数（Specific gas constant）：
+\begin{gather}
+R_s = \frac{R}{M} \\
+R_s = c_p - c_v
+\end{gather}
+
+比热容比（The ratio of specific thermal capacities）：
+\begin{equation}
+\gamma = \frac{c_p}{c_v}
+\end{equation}
+
+\section{能量传递}
+
+\subsection{能量守恒}
+\textbf{热力学第一定理}表明，系统$\Omega$的动能$K_{\Omega}$、内能$E_{\Omega}$变化是由施加到系统上的机械能$P_{ext}$和热交换$Q_{exch}$引起的，动能$K_{\Omega}$、内能$E_{\Omega}$和压力（应力）$P_{str}$也有一定的转换关系，\textit{说明$P_{str}$通过耗散转化成了能量}。
+
+\begin{gather}
+    \frac{dE_{\Omega}}{dt} + \frac{dK_{\Omega}}{dt} = P_{ext} + Q_{exch} \\
+    \frac{dK_{\Omega}}{dt} + P_{str} = P_{ext} \\
+    \frac{dE_{\Omega}}{dt} = P_{str} + Q_{exch}
+\end{gather}
+
+系统$\Omega$的内能和内能的变化率定义如下：
+\begin{gather}
+    E_{\Omega} = \int_{\Omega} E dm \\
+    \frac{E_{\Omega}}{dt} = \int_{\Omega} \frac{dE}{dt} dm = \int_{\Omega} \rho \frac{dE}{dt} dv
+\end{gather}
+
+连续介质假设推导出压力定义为：
+
+\begin{equation}
+    P_{str} = \int_{\Omega} (\bm{\sigma:D}) dv
+\end{equation}
+
+$\bm{\sigma}$和$\bm{D}$分别为应力张量和应变速率张量。操作符“：”的计算法则如下：
+
+\begin{equation}
+    \bm{a:b} = \sum_n \sum_m a_{nm}b_{nm}
+\end{equation}
+
+应力张量也可表示为$\sigma = -p\bm{I}+\tau$，所以$P_{str}$实际上是压力功(pressure-volume work)和粘性耗散(viscous
+dissipation)之和：
+
+\begin{equation}
+    P_{str} = \int_{\Omega} p(\nabla\cdot \bm{u}) dv - \int_{\Omega}(\tau:\nabla \bm{u}) dv
+\end{equation}
+
+系统$\Omega$的热交换$Q_{exch}$是热传导、热辐射和附加热源引起的：
+
+\begin{equation}
+    Q_{exch} = - \int_{\partial\Omega} (\bm{q\cdot n}) ds - \int_{\partial\Omega} (\bm{q_r\cdot n}) ds + \int_{\Omega}Q dv
+\end{equation}
+
+热平衡方程表示如下：
+
+\begin{equation}
+    \int_{\Omega} \rho \frac{dE}{dt} dv + \int_{\partial\Omega} (\bm{q\cdot n}) ds + \int_{\partial\Omega} (\bm{q_r\cdot n}) ds = \int_{\Omega} (\bm{\sigma:D}) dv + \int_{\Omega} Q dv
+\end{equation}
+
+基本的传热是一个典型的\textbf{椭圆偏微分方程}：
+
+\begin{gather}
+    \rho C_p \frac{\partial T}{\partial t} + \nabla\cdot \bm{q} = Q \\
+    \bm{q} = -k \nabla T
+\end{gather}
+
+施加Dirichlet或Neumann边界条件以求解：
+
+\begin{gather}
+    T = T_0\\
+    -\bm{n\cdot q} = q_0
+\end{gather}
+
+当密度$\rho$，热容$C_p$，热导率$k$，热源$Q$，边界条件均为常数时，方程是一个线性系统。
+
+\section{传热系数 The heat transfer coefficients}
+
+当模拟因自然对流或强制对流产生的热量传递现象时，原则上采取两种方式：1.对表面应用传热系数，即假定与流体接触的边界上的对流热通量与热边界层上的温差成正比$-n\cdot q = h(T_{ext}-T)$；2.使用共轭传热（Conjugate Heat Transfer）或非等温流（Nonisothermal
+Flow）直接计算模型与周围流体的热交换。
+
+需要注意的是，如果计算了流体的对流现象，就不要使用换热系数。（It such case using heat transfer coefficients to model convective heat transfer is not relevant. Instead, modeling the fluid as immobile is likely to be accurate.）
+
+通常根据对流的类型（自然或强制对流）和计算域的类型（外部或内部计算域）将对流传热分为四类。在自然对流中，有温差引起的浮力（buoyancy forces）起主要作用。传热系数$h$大多是通过经验和理论关联计算得出，首先定义一些无量纲数：
+
+The Nusselt number, $Nu=hL/k$
+
+The Reynolds number, $Re=\rho uL/\mu$
+
+The Prandtl number, $Pr=\mu C_{p}/k$
+
+The Rayleigh number, $Ra=GrPr$
+
+其中$h$为换热系数，$W/(m^2 \cdot K)$，$k$为导热系数，单位$W/(m\cdot K)$
+

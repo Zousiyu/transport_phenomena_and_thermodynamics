@@ -1,0 +1,117 @@
+\documentclass[oneside]{book}
+
+%% 必须的包
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{xcolor}
+
+%% 中文文字处理
+\colorlet{title}{blue!40!black}
+\usepackage[heading = true]{ctex}
+    \ctexset{today = old}
+    \pagestyle{plain}  % 自定义板式
+    %% 标题设置
+    \ctexset{
+        chapter = {
+            format += \color{title},
+            pagestyle = chapterpage,
+        },
+        section = {
+            format = \bf\raggedright\color{title}\zihao{4},
+            numberformat = \rmfamily,
+        },
+        subsection = {
+            format = \rmfamily\heiti\raggedright\color{title}\zihao{5},
+        },
+    }%
+
+% 问题环境
+\newtheorem{prob}{问题}[chapter]
+\renewcommand{\theprob}{\arabic{prob}}
+
+%% 字体设置
+\usepackage{fontspec}
+    \setmainfont{Adobe Garamond Pro}  % TeX Gyre Pagella
+    \setsansfont{TeX Gyre Heros}
+    \setmonofont{Inziu Iosevka Slab SC}  % Source Code Pro, Consolas, DejaVu Sans Mono
+    \setCJKmainfont[BoldFont={Source Han Sans SC}, ItalicFont={KaiTi}]{Source Han Serif SC}
+    \setCJKmonofont{Inziu Iosevka Slab SC}  % FangSong
+    \setCJKsansfont{Source Han Sans SC}
+
+\usepackage{geometry}
+    \geometry{paper=a4paper,
+        hmargin = 2cm,
+        vmargin = 2cm,
+    }%
+
+%% 页眉页脚
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+    \fancyhead{}
+        \lhead{\kaishu\nouppercase{\leftmark}}
+        \rhead{\thepage}
+    \fancyfoot{}
+% 章标题所在页专用版式
+\fancypagestyle{chapterpage}{%
+    \chead{\slshape\leftmark}
+    \lhead{\sffamily 传递现象与热力学笔记}
+    \rhead{\thepage}
+}
+
+\usepackage{enumitem}%列表
+    \setlist[itemize]{%
+        nosep,
+        leftmargin=\parindent,
+}
+
+%% 超链接
+\usepackage{hyperref}
+    \hypersetup{%
+        bookmarksopen=true,  % 展开书签
+        bookmarksnumbered=true,  % 显示书签编号
+        bookmarksopenlevel=1,
+        unicode=true,  % 使书签支持unicode字符
+        %链接、颜色
+        breaklinks=true,  % 链接自动换行
+        colorlinks=true,  % 加颜色区分链接
+        citecolor=black,  % 文献序号颜色
+    }
+    %定制pdf属性
+    \hypersetup{%
+        pdftitle={transport phenomena and thermodynamics},
+        pdfauthor={邹思宇},
+        pdfkeywords={transport phenomena and thermodynamics},
+        pdfstartview=Fit,%整个页面适合窗口
+        pdfcreator={XeLaTeX \& TeXStudio \& MiKTeX}
+    }%
+
+%自动引用
+\AtBeginDocument{%
+    \def\figureautorefname{图}%
+    \def\tableautorefname{表}%
+    \def\partautorefname{卷}%
+    \def\appendixautorefname{附录}%
+    \def\equationautorefname{式}%
+    \def\Itemautorefname{列表}%
+    \def\chapterautorefname{章}%
+    \def\sectionautorefname{节}%
+    \def\subsectionautorefname{小节}%
+    \def\subsubsectionautorefname{条目}%
+    \def\paragraphautorefname{自然段}%
+    \def\Hfootnoteautorefname{脚注}%
+    \def\AMSautorefname{式}%
+    \def\theoremautorefname{定理}%
+    \def\pageautorefname{页}%
+}%
+
+\begin{document}
+    \frontmatter
+    \tableofcontents
+    \mainmatter
+    \input{chapters/momentum_transport}
+    \input{chapters/mass_transport}
+    \input{chapters/thermodynamics}
+    \backmatter
+\end{document}
