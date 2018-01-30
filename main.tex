@@ -5,7 +5,13 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{mathtools}
 \usepackage{xcolor}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\graphicspath{{fig/}}
+\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.jpeg,.bmp}
 
 %% 中文文字处理
 \colorlet{title}{blue!40!black}
@@ -33,7 +39,7 @@
 
 %% 字体设置
 \usepackage{fontspec}
-    \setmainfont{Adobe Garamond Pro}  % TeX Gyre Pagella
+    \setmainfont{TeX Gyre Pagella} % Adobe Garamond Pro
     \setsansfont{TeX Gyre Heros}
     \setmonofont{Inziu Iosevka Slab SC}  % Source Code Pro, Consolas, DejaVu Sans Mono
     \setCJKmainfont[BoldFont={Source Han Sans SC}, ItalicFont={KaiTi}]{Source Han Serif SC}
@@ -61,10 +67,53 @@
 }
 
 \usepackage{enumitem}%列表
-    \setlist[itemize]{%
-        nosep,
-        leftmargin=\parindent,
+\setlist[description]{%
+    font=\bfseries\color{blue!40!black},
+    noitemsep,
+    nosep,
+    align=left,
+    leftmargin=!,
+    labelindent=\parindent,
+    labelwidth=20mm,
+    labelsep=1em,
+    itemindent=0mm,
 }
+\setlist[enumerate]{%
+    noitemsep,
+    nosep,
+    leftmargin=0pt,
+    itemindent=*,
+    labelindent=\parindent,
+    listparindent=\parindent,
+}
+\setlist[itemize]{%
+    nosep,
+    leftmargin=\parindent,
+}
+
+%===========================图表标题样式============================
+\usepackage[hypcap=true,hypcapspace=1cm]{caption}
+\captionsetup[figure]{%
+    labelsep=quad,
+    justification=centering,
+    labelfont=bf,
+    textfont={sf,color=title},
+}%
+\captionsetup[table]{%
+    labelsep=quad,
+    justification=centering,
+    labelfont=bf,
+    textfont={sf,color=title},
+}%
+
+%% 参考文献
+\usepackage[
+    backend=biber,
+    bibstyle=gb7714-2015,
+    citestyle=gb7714-2015,
+    ]{biblatex}
+%biblatex宏包的参考文献数据源加载方式
+\addbibresource[location=local]{ref.bib}
 
 %% 超链接
 \usepackage{hyperref}
@@ -76,6 +125,7 @@
         %链接、颜色
         breaklinks=true,  % 链接自动换行
         colorlinks=true,  % 加颜色区分链接
+        linkcolor=title,
         citecolor=black,  % 文献序号颜色
     }
     %定制pdf属性
@@ -106,6 +156,11 @@
     \def\pageautorefname{页}%
 }%
 
+%% url样式
+\newfontfamily\urlfont{PT Sans Narrow}
+\def\UrlFont{\urlfont}
+\urlstyle{urlfont}
+
 \begin{document}
     \frontmatter
     \tableofcontents
@@ -113,5 +168,7 @@
     \input{chapters/momentum_transport}
     \input{chapters/mass_transport}
     \input{chapters/thermodynamics}
+    \input{chapters/numerical_analysis}
     \backmatter
+    \printbibliography[heading=bibliography,title=参考文献]
 \end{document}

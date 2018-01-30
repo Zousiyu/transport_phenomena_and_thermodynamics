@@ -1,0 +1,51 @@
+\chapter{Numerical Analysis}
+
+\section{数值微分和数值积分}
+当函数是初等函数时，可以使用\textbf{符号计算}求出其微积分，一旦函数是非初等函数，就只能使用\textbf{数值计算}方法了。
+
+\subsection{Taylor's Formula}
+首先看泰勒定理，其中$ c\in(x,x+h) $：
+\begin{equation}
+f(x) =f(x_0)+f'(x_0)(x-x_0) + \frac{f''(x_0)}{2!}(x-x_0)^2 +
+\underbrace{\frac{f^{(n)}(c)}{n!}(x-x_0)^n}_{\text{remainder term}}
+\end{equation}
+
+\subsection{有限差分}
+首先看导数的定义：
+
+\begin{equation}
+f'(x) = \lim_{h\rightarrow 0} \frac{f(x+h)-f(x)}{h}
+\end{equation}
+
+如果$ f $二阶连续可微，泰勒展开为：
+
+\begin{equation}
+f(x+h) = f(x)+hf'(x)+\frac{h^2}{2}f''(c)
+\end{equation}
+
+得出大名鼎鼎的\textbf{两点前向差分公式}，其中$ c\in(x,x+h) $：
+
+\begin{equation}
+f'(x) = \frac{f(x+h)-f(x)}{h} - \frac{h}{2}f''(c)
+\end{equation}
+
+\section{Newton Cotes数值积分}
+对定义在区间$ [a,b] $上的函数$ f $，可计算通过函数$ f(x) $的一些点的插值多项式的积分来近似$ f(x) $的积分。
+
+梯形法则，其中$ h=x_1-x_0 $，$ c\in(x_0,x_1) $：
+
+\begin{equation}
+\int_{x_0}^{x_1}f(x)dx = \frac{h}{2}(y_0 + y_1) - \frac{h^3}{12}f''(c)
+\end{equation}
+
+辛普森法则，其中$ h=x_2-x_1=x_1-x_0 $，$ c\in(x_0,x_2) $：
+
+\begin{equation}
+\int_{x_0}^{x_1}f(x)dx = \frac{h}{3}(y_0 +4 y_1+y_2) - \frac{h^5}{12}f^{(4)}(c)
+\end{equation}
+
+\section{Gauss数值积分}
+
+\begin{equation}
+\int_1^1f(x)dx \approx \sum_{i=1}^n c_i f(x_i)
+\end{equation}

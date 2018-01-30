@@ -1,4 +1,11 @@
 \chapter{Thermodynamics}
+强度量：与物质的量无关的物理量，压力$ p $，温度$ T $。
+
+广延量：与物质的量\textbf{有关}的物理量，具有可加性，质量$ m $，容积$ V $，内能$ E $，焓$ H $，熵$ S $。
+
+比参数：将广延量化为强度量，让其与物质的量无关，方便比较。
+
+\section{状态方程和常见物理量}
 
 经典理想气体状态方程：
 \begin{equation}
@@ -8,8 +15,10 @@ pV=nRT
 
 从\autoref{idealGas}推导出\textbf{理想气体密度公式}：
 \begin{equation}
-\rho = \frac{Mp}{RT}
+\rho = \frac{Mp}{RT} = \frac{p}{R_s T}
 \end{equation}
+
+对理想气体而言，各物理性质是压力$ p $和温度$ T $的函数，如$ \rho(p,T) $、$ c_p(p,T) $、$ \mu(T) $、$ k(T) $。
 
 比气体常数（Specific gas constant）：
 \begin{gather}
@@ -17,9 +26,71 @@ R_s = \frac{R}{M} \\
 R_s = c_p - c_v
 \end{gather}
 
-比热容比（The ratio of specific thermal capacities）：
+定压比热容$ c_p $，令的$ 1\si{\kilogram} $物质的温度上升$ 1\si{\kelvin} $所需的能量，单位\si{\joule\per\kilogram\per\kelvin}。
+
+比热容比（The ratio of specific thermal capacities），常见的双原子气体的$ \gamma=1.4 $，大多数液体的$ \gamma=1.1 $，水的$ \gamma=1.0 $。
 \begin{equation}
 \gamma = \frac{c_p}{c_v}
+\end{equation}
+
+热扩散系数(Thermal diffusivity)，其中$ k $为热导率( \si{\watt\per\meter\per\kelvin})，$ \rho $为密度( \si{\kilogram\per\cubic\meter})，$ c_p $为定压比热容(\si{\joule\per\kilogram\per\kelvin})。
+
+\begin{equation}
+\alpha = \frac{k}{\rho c_p}
+\end{equation}
+
+焦耳：
+
+\[1\si{\joule} = 1\si{\newton\meter} = \frac{\si{\kilogram\meter\squared}}{\si{\second\squared}} = 1\si{\watt\second} \]
+
+\section{总能量方程}
+能量守恒定义为绝热系统的总能量是一个常数。即总的能量不随时间变化，只能从一种形式转换为另一种形式且不能凭空消失。在CFD里面通常只考虑动能(机械能)和分子内能(内能)。能量守恒可以表示为：
+
+\begin{center}
+\textbf{流体微团内能量的变化率=流入流体微团的净热流量+体积力和表面力对流体微团做功的功率}
+\end{center}
+
+动能定义为：
+
+\begin{equation}
+K=\frac{1}{2}|\bm{u}|^2
+\end{equation}
+
+设单位质量的内能定义为：$ E $，流体微团动能和内能总和的时间\textbf{变化率}定义为：
+
+\begin{equation}
+\rho\frac{D(K+E)}{Dt}dxdydz
+\end{equation}
+
+设附加热源为$ Q $，流体微团的净热源为：
+
+\begin{equation}
+\rho Qdxdydz
+\end{equation}
+
+设热通量为$ \bm{q}=-k\nabla T $，热传导对流体微团的加热为：
+
+\begin{equation}
+-\nabla \cdot\bm{q}dxdydz
+\end{equation}
+
+重力做功、压力和剪应力做功可以表示为：
+
+\begin{gather}
+\rho\bm{g}\cdot\bm{u}dxdydz \\
+(-\nabla\cdot(p\bm{u}) + \nabla\cdot(\tau\cdot\bm{u})) dxdydz
+\end{gather}
+
+总能量方程为（非守恒形式）：
+
+\begin{equation}
+\rho\frac{D(K+E)}{Dt} = \rho Q - \nabla\cdot\bm{q} + \rho\bm{g}\cdot\bm{u} - \nabla\cdot(p\bm{u}) + \nabla\cdot(\tau\cdot\bm{u})
+\end{equation}
+
+总能量方程为（守恒形式）：
+
+\begin{equation}
+\frac{\partial\rho E}{\partial t} + \frac{\partial\rho K}{\partial t} + \nabla\cdot(\rho\bm{u}E) + \nabla\cdot(\rho\bm{u}K) = -\nabla\cdot(p\bm{u}) + \rho Q - \nabla\cdot\bm{q} + \rho\bm{g}\cdot\bm{u} + \nabla\cdot(\tau\cdot\bm{u})
 \end{equation}
 
 \section{能量传递}
@@ -86,6 +157,21 @@ dissipation)之和：
 
 当密度$\rho$，热容$C_p$，热导率$k$，热源$Q$，边界条件均为常数时，方程是一个线性系统。
 
+\section{Boussinesq近似}
+为了进行热对流，流体的密度必须时温度的函数$ \rho(T) $，因此我们需要一个状态方程来补充质量、动量、能量方程，密度状态方程为：
+
+\begin{equation}
+\rho_{\text{buoyancy}} = \rho_{ref}(1-\beta(T-T_{ref}))
+\end{equation}
+
+当流体受温度影响密度发生变化，但密度的变化非常小，且温度变化不足以介质的性质发生很大变化，可以使用Boussinesq近似来减小方程的非线性。Boussinesq假定在流动的控制方程中除了浮力项外，其他项的密度为是常数。
+
+Boussinesq近似将流体看作不可压缩流体，即$ \nabla\cdot\bm{u} = 0 $，密度的变化仅影响体积力源项。其动量方程为：
+
+\begin{equation}
+\rho \frac{\partial \bm{u}}{\partial t} + \rho\nabla\cdot(\bm{uu}) = -\nabla p + \nabla\cdot(\mu\nabla\bm{u}) + \rho_{ref}(1-\beta(T-T_{ref}))\bm{g}
+\end{equation}
+
 \section{传热系数 The heat transfer coefficients}
 
 当模拟因自然对流或强制对流产生的热量传递现象时，原则上采取两种方式：1.对表面应用传热系数，即假定与流体接触的边界上的对流热通量与热边界层上的温差成正比$-n\cdot q = h(T_{ext}-T)$；2.使用共轭传热（Conjugate Heat Transfer）或非等温流（Nonisothermal
@@ -103,5 +189,112 @@ The Prandtl number, $Pr=\mu C_{p}/k$
 
 The Rayleigh number, $Ra=GrPr$
 
-其中$h$为换热系数，$W/(m^2 \cdot K)$，$k$为导热系数，单位$W/(m\cdot K)$
+其中$h$为换热系数(\si{\watt\per\square\meter\per\kelvin})，$k$为导热系数(\si{\watt\per\meter\per\kelvin})。
+
+\section{多孔介质传热}
+多孔介质传热涉及流-固两相，在不考虑非等温流动过程中的压力功和粘性耗散的情况下，各项能量传递控制方程写做。
+
+固体总的能量传递：
+
+\begin{equation}\label{solid-heat}
+\rho_s C_{p,s} \frac{\partial T_s}{\partial t}+ \nabla\cdot\bm{q}_s = Q_s
+\end{equation}
+
+流体中的能量传递（忽略压力功和粘性耗散）：
+
+\begin{equation}\label{fluid-heat}
+\rho_f C_{p,f} \frac{\partial T_f}{\partial t} + \rho_f C_{p,f}\bm{u}_f\cdot\nabla T_f + \nabla\cdot\bm{q}_f = Q_f
+\end{equation}
+
+流-固局部能量传递有\textbf{局部热平衡}和\textbf{非局部热平衡}两种假设。如果两相的吸热能力区别不大，大多数情况下可以假定两相温度相等。多porous plates（多孔板？）来讲，需要结合Sparrow number来判断局部热平衡假设是否还适用；对packed bed（填充床）来讲，需要结合Darcy number来判断。$ Sp<100 \text{or} 500 $，$ Da>10^{-7} $时，局部热平衡假设有效。
+
+\begin{gather}
+Sp = \frac{h_{sf}L^2}{k_{eff}r_h} \\
+Da = \frac{\kappa}{d^2}
+\end{gather}
+
+其中$ h_{sf} $为流-固传热系数(\si{\watt\per\meter\squared\per\kelvin})，$ L $是平板厚度(\si{\meter})，$ k_{eff} $是多孔介质有效热导率(\si{\watt\per\meter\per\kelvin})，$ r_h $是水力半径(\si{\meter})，$ \kappa $是渗透率(\si{\square\meter})，$ d $是颗粒直径(\si{\meter})。
+
+\subsection{多孔介质局部热平衡理论 Local Thermal Equilibrium}
+局部热平衡假设流-固两相温度一致，即：
+
+\[T_f=T_s=T\]
+
+对\autoref{solid-heat}和\autoref{fluid-heat}所示的单相传热控制方程应用混合规则，固相能量传递乘上固相体积分数$ \theta_s $，流体相乘上流体体积分数$ 1-\theta_s $，多孔介质区域能量传递控制方程被整合为：
+
+\begin{gather}
+(\rho C_p)_{eff} \frac{\partial T_f}{\partial t} + \rho C_p\bm{u}\cdot\nabla T + \nabla\cdot\bm{q} = Q \\
+\bm{q} = -k_{eff}\nabla T
+\end{gather}
+
+其中$ \rho $为流体密度，$ C_p $为流体定压热容，$ \bm{u} $是Darcy速度，即单位截面积的体积流率，平均线性速度(The average linear velocity，孔内的流速)$ \bm{u}_f=\bm{u}/(1-\theta_s) $。
+
+$ (\rho C_p)_{eff} $为多孔介质体积有效定压热容：
+
+\[(\rho C_p)_{eff} = \theta_s\rho_sC_{p,s} + (1-\theta_s)\rho_f C_{p,f}\]
+
+$ k_{eff} $为有效热导率，取决于几何的复杂程度，有如下几种不同定义：
+
+\begin{enumerate}
+    \item 如果热传导在流-固两相同时发生，即两相没有净传热，则使用体积平均模型，按加权算术平均值计算
+    \[k_{eff} =\theta_s k_s + (1-\theta_s)k_f\]
+    \item 如果热传导按一定顺序依次在流-固两相发生，则使用加权调和平均值
+    \[\frac{1}{k_{eff}} = \frac{\theta_s}{k_s} + \frac{1-\theta_s}{k_f} \]
+    \item 按加权几何平均值来算
+    \[k_{eff} = k_p^{\theta_s}\cdot k^(1-\theta_s) \]
+\end{enumerate}
+
+\subsection{多孔介质非等温流中的压力功和粘性耗散}
+
+非等温流过程中，满足下式所示关系时，压力功效应可以被忽略：
+
+\begin{equation}
+\beta TL\left(\frac{g\beta}{c_{p,f}}\right) \ll 1
+\end{equation}
+
+当压力功效应不能被忽略时，需要向多孔介质的能量传递控制方程中添加压力功项：
+
+\begin{equation}
+(\rho C_p)_{eff} \frac{\partial T_f}{\partial t} + \rho C_p\bm{u}\cdot\nabla T + \nabla\cdot\bm{q} + \boxed{\beta T \left(\frac{\partial p}{\partial t}+\bm{u}\cdot\nabla p\right)} = Q
+\end{equation}
+
+同理，满足下式时，粘性耗散效应也可以被安全忽略：
+
+\begin{equation}
+L \left( \frac{g\beta}{c_{p,f}} \right) \ll 1
+\end{equation}
+
+Eckert Number也可以用来判断是否可以忽略压力功和粘性耗散，详情见\autoref{dimensionless-number}。粘性耗散常常写做：
+
+\begin{equation}
+\phi = \frac{\mu}{\kappa}\bm{u\cdot u} + \frac{c_p}{\kappa^{1/2}}|\bm{u}|\bm{u\cdot u} - \tilde{\mu}\bm{u}\cdot\nabla^2\bm{u}
+\end{equation}
+
+Nield等人进行了尺度分析，\textbf{将粘性耗散同热扩散项比较}，提出了一个用于判别粘性耗散是否可被忽略的无量纲数。结果表明，当$ N\ll 1 $时，粘性耗散可被安全忽略。
+
+\begin{equation}\label{Nield}
+N = \frac{Br}{Da} = \frac{\mu U^2 L^2}{\kappa k_{eff}\Delta T}
+\end{equation}
+
+其涉及的无量纲数定义如下，其中$ Da $为Darcy number：
+
+\[Br = \frac{Ec}{Pr} = \frac{\mu U^2}{k_{eff}\Delta T}\]
+
+\[ Ec = \frac{U^2}{c_p \Delta T} \]
+
+\[ Da = \frac{\kappa}{L^2} \]
+
+对多孔介质内强制对流来讲，特征速度很好选择，且大多数情况下$ Da $数较小，也即在中等大小的Brinkman数下，粘性耗散的作用非常重要，不容忽视。
+
+对自然对流来讲，特征速度$ U\approx (k_{eff}/\rho c_p L)Ra^{1/2} $，当$ Ge \ll 1 $时，可忽略自然对流过程中的粘性耗散，其中Gebhart number的定义为：
+
+\[ Ge = \frac{g\beta L}{c_p} \]
+
+上述的Nield数在P\'{e}clet数不太大的情况下能有效判别强制对流中的粘性耗散是否可以忽略，如果P\'{e}clet数过大，Nield数变为\textbf{粘性耗散和对流运输项之比}：
+
+\[N = \frac{Ec}{DaRec}\]
+
+\subsection{热分散 Thermal Dispersion}
+
+
 

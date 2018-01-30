@@ -1,5 +1,92 @@
 \chapter{Mass Transport}
 
+\section{多组分质量传递基本概念}
+
+对多组分流体混合物而言$ m=\sum m_i $，质量浓度(\si{\kilogram\per\meter\cubed})定义为：
+
+\[\rho_i = \frac{m_i}{V} \]
+
+混合物的密度即为全部物质的质量浓度之和：
+
+\[\rho = \sum\rho_i \]
+
+类似地，混合物的物质的量(\si{\mole})、质量分数($ \sum \omega_i = 1 $)、摩尔分数分别定义为：
+
+\[ n_i=\frac{m_i}{M_i} \]
+\[ \omega_i = \frac{m_i}{m} \]
+\[ x_i = \frac{n_i}{n} \]
+
+并且有如下转换关系：
+
+\[\rho_i = \rho\omega_i = \rho\frac{M_i}{M}x_i \]
+
+混合物的等效摩尔质量(\si{\kilogram\per\mole})定义为：
+
+\[ M = \sum M_i x_i \]
+
+如果气体混合物是理想气体，则满足：
+
+\[ PV=nRT \]
+\[ PV=mR_m T \]
+
+其中$ R_m $是混合物气体参数，定义为：
+
+\[ R_m = \frac{n}{m}R = \frac{R}{M} \]
+
+气体$ i $的分压为$ P_i $，根据Dalton定律有：
+
+\[ P=\sum P_i \]
+
+\section{Mass diffusivity}
+扩散系数分为三类，热扩散系数$ \alpha $、质量扩散系数$ D $、动量扩散系数$ \upsilon $，单位均为\si{\square\meter\per\second}。定义Schmidt数为$ Sc=\upsilon/D $，根据动力学理论，理想气体的$ Sc=1 $，故$ Sc $数其主要用来表征气体与理想气体的偏差（即表征气体的非理想性）。
+
+浓度梯度引起分子扩散，通常化合物在空气中的扩散系数为在水中的扩散系数的1000倍左右。扩散系数的国际单位为\si{\square\meter\per\second}。对气体而言，根据动力学理论可知，气体的扩散系数与温度和压力相关，关系通常为$ f(T^n/p) $(通常$ n=3/2 $)，气体的扩散系数通常随温度升高或压力下降而增大。实际上，由于气体的非理想性，$ n $通常要更大，例如水汽在空气中扩散，$ n=2.072(250\si{\kelvin}<T<459\si{\kelvin}) $。
+
+\textbf{气体的二元扩散系数}常用Chapman–Enskog theory，其中，$ M $为分子质量(\si{\kilogram\per\mol})，$ p $为压力(\si{\pascal})，$ \sigma_{ij} $为平均碰撞直径(\si{\angstrom})，$ \Omega $是一个温度相关的碰撞积分：
+
+\begin{equation}
+D_{AB} = 2.695\times 10^{-3}\cdot \frac{\sqrt{T^3 (M_A+M_B)/(2000M_AM_B)}}{p\sigma_A\sigma_B\Omega_D}
+\end{equation}
+
+\textbf{液体的二元扩散系数}常用Wilke-Chang equation，其中$ \mu_B $为动力粘度(\si{\newton\second\per\square\meter}),$ V_A $为正常沸点下的分子体积(\si{\cubic\meter\per\mole})，$ \phi_B $为溶剂的无量纲关联系数，默认为1：
+
+\begin{equation}
+D_{AB} = 3.5\times 10^{-15} \frac{(\phi_B M_B)^{1/2} T}{\mu V_A^{0.6}}
+\end{equation}
+
+几个扩散系数的参照：
+
+\begin{table}[!htb]
+    \centering
+    \caption{几个扩散系数参照\si{\square\meter\per\second}}
+    \begin{tabular}{cccc}
+        \toprule
+        物质 & 在空气中1atm & 在水中 \\
+        \midrule
+        甲醇 & $ 1.5\times10^{-5} $ & $ 1.64\times10^{-9} $ \\
+        乙醇 & $ 1.1499\times10^{-5} $ & $ 1.216895\times10^{-9} $ \\
+        氧气 & $ 1.76\times10^{-5}(25\si{\degreeCelsius}) $ & - \\
+        苯酚 & $ 8.2\times10^{-6} $ & $ 9.1\times10^{-10} $ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+上面两个公式是基于分子动力学，比较难用，主要是涉及分子动力学的常数比较难寻找。Fuller提出了一个气体扩散系数的经验关联式，形如$ D_{AB}=f(T^{1.75}/p) $，简单易用，误差不超过$ 10\% $。详情参见文献\cite{poling2001properties}。
+
+\begin{equation}
+D_AB=\frac{0.00143T^{1.75}}{pM_{AB}^{1/2}\left( \sum_{V_A}^{1/3} + \sum_{V_B}^{1/3} \right)^2 }
+\end{equation}
+
+其中$ D_{AB} $为二元扩散系数(\si{cm\squared\per\second})；$ T $为温度(\si{\kelvin})，$ M_{AB}=2M_A M_B/(M_A + M_B) $；$ M_A $，$ M_B $为相对分子质量(\si{\g\per\mole})；$ p $为压力(\si{bar})。
+
+\section{Thermal Diffusion/Soret effect}
+
+由温差引起的扩散称为\textbf{Soret效应}，也称热泳（\url{https://en.wikipedia.org/wiki/Thermophoresis}）。当混合物温差大、分子质量相差大时会产生热扩散，分子质量高的物质在低温区域积累，分子质量低的物质在高温处积累。多组分混合物所有热扩散系数之和为0：
+
+\begin{equation}
+\sum_{i=1}^Q D_i^T = 0
+\end{equation}
+
 \section{浓物质传递}
 由$i$个物质构成的，有$j$个反应的反应流、浓物质系统的质量守恒方程为：
 
@@ -41,14 +128,6 @@ $\tilde{D}_{ik}$是多组分Fick扩散系数，$D_i^T$是热扩散系数，$\bm{
 
 \subsection{Fick's law}
 \textbf{Fick's law}是一个通用的模型，通常用来描述分子扩散不占主导地位的系统，不需要多组分扩散系数，计算消耗最低。
-
-\subsection{热扩散 Thermal Diffusion}
-
-由温差引起的扩散称为\textbf{Soret效应}，当混合物温差大、分子质量相差大时会产生热扩散，分子质量高的物质在低温区域积累，分子质量低的物质在高温处积累。多组分混合物所有热扩散系数为0：
-
-\begin{equation}
-    \sum_{i=1}^Q D_i^T = 0
-\end{equation}
 
 \section{多组分扩散系数}
 Maxwell-Stefan扩散系数$ D_{ik} $，Fick扩散系数$ D_w^F $，热扩散系数$ D_w^T $。
@@ -107,3 +186,68 @@ Maxwell-Stefan扩散系数$ D_{ik} $，Fick扩散系数$ D_w^F $，热扩散系�
 \begin{equation}
     \frac{\partial c}{\partial t} + \nabla\cdot(-D\nabla c+\bm{u}c) = R
 \end{equation}
+
+\section{多孔介质质量传递}
+
+对每一个组分应用质量守恒定律，并忽略源汇项，得出基于质量浓度的\textbf{单组分质量守恒方程}：
+
+\begin{equation}
+\frac{\partial \rho_i}{\partial t} + \nabla\cdot(\rho_i\bm{U_i}) = 0
+\end{equation}
+
+将方程中的质量浓度和内在平均速度汇总，得出全部组分的质量守恒方程：
+
+\begin{equation}
+\frac{\partial \rho}{\partial t} + \nabla\cdot(\sum\rho_i\bm{U_i}) = 0
+\end{equation}
+
+使用$ \bm{U}=\frac{1}{\rho}\sum\rho_i\bm{U_i} $表示质量平均速度，得出：
+
+\begin{equation}
+\frac{\partial \rho}{\partial t} + \nabla\cdot(\rho\bm{U}) = 0
+\end{equation}
+
+我们定义物质$ i $相对于质量平均速度的运动为扩散（diffusion），$ \bm{U_i}-\bm{U} $为扩散速度，则扩散通量为：
+
+\begin{equation}
+\bm{j_i} = \rho_i(\bm{U_i} - \bm{U})
+\end{equation}
+
+则，考虑对流-扩散的单组分质量守恒方程为：
+
+\begin{equation}
+\frac{\partial \rho_i}{\partial t} + \nabla\cdot(\rho_i\bm{U}) = -\nabla\cdot \bm{j_i}
+\end{equation}
+
+根据Fick定律，$ \bm{j_i} = -D\nabla\rho $，在上式两端同时乘上孔隙率$ \varepsilon $以考虑多孔介质内的质量传递：
+
+\begin{equation}
+\varepsilon\frac{\partial \rho_i}{\partial t} + \varepsilon\nabla\cdot(\rho_i\bm{U}) = \varepsilon\nabla\cdot(D\nabla \rho_i)
+\end{equation}
+
+运用Dupuit–Forchheimer relationship，考虑多孔介质内部的有效扩散系数，并将上式改写为关于摩尔浓度：
+
+\begin{equation}
+\varepsilon\frac{\partial c_i}{\partial t} + \varepsilon\nabla\cdot(c_i\bm{u}) = \varepsilon\nabla\cdot(D_{eff}\nabla c_i)
+\end{equation}
+
+\section{化学反应}
+
+化学反应速率表达式一般为：
+
+\begin{equation}
+\frac{dc}{dt} = -kc^n
+\end{equation}
+
+反应速率常数常常于温度和和活化能相关，一般由Arrhenius relationship给出：
+
+\begin{equation}
+k = A \exp(-\frac{E}{RT})
+\end{equation}
+
+和温度相关的Arrhenius表达式一般为：
+
+\begin{equation}
+k = A \left( \frac{T}{T_{ref}} \right) \exp(-\frac{E}{RT})
+\end{equation}
+
