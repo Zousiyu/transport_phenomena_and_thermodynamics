@@ -49,3 +49,107 @@ f'(x) = \frac{f(x+h)-f(x)}{h} - \frac{h}{2}f''(c)
 \begin{equation}
 \int_1^1f(x)dx \approx \sum_{i=1}^n c_i f(x_i)
 \end{equation}
+
+\section{微分方程及其数值解法}
+
+看一个典型的平滑条件下的微分方程，Logistic方程，它有无穷多个解，通过定义初始条件将其转化为初值问题，我们就可以找出无穷多解中我们感兴趣的解。
+
+\[\frac{dy}{dt} = cy(1-y)\]
+
+\subsection{显式方法与隐式方法}
+
+显式求解是对时间进行差分，不存在迭代和收敛问题，最小时间步取决于最小单元的尺寸。过多和过小的时间步往往导致求解时间非常漫长，但总能给出一个计算结果。解题费用非常昂贵，因此在建模划分网格时要非常注意。
+
+隐式求解和时间无关，采用的是牛顿迭代法（线性问题就直接求解线性代数方程组），因此存在一个迭代收敛问题，不收敛就的不到结果。
+
+显式求解与隐式在数学上说主要是在求解的递推公式一个是用显式方程表示，一个是用隐式方程来表示。显示方程的后一次迭代可以由前一次直接求出，即从前面已知的值确定新值，
+
+\[a_n=a_{n-1}+b_{n-1} \]
+
+如果不能直接求解（通常当前时间步值的求解与当前时间步值有函数关系，写成隐函数形式），就是隐式方程，
+
+\[a_n=a_{n-1}+f(a_n)\]
+
+其中，$ f(a_n) $为$ a_n $的函数，此时$ a_n $不能用方程显式表示，即数学上的\textbf{隐函数}，一般难以直接求解，多用迭代算法间接求解。有限元在求解动力学问题中直接积分法中的中心差分积分就是显示求解，而Newmark积分法则为隐式积分。
+
+前向解法和后向解法的区别就是，前向的求解只依赖于\textbf{前一时刻}的状态量，而后向求解依赖于\textbf{前一时刻和当前时刻}的状态。
+
+\subsection{初值问题和边值问题}
+
+\textit{初值问题（IVP）}包含微分方程和在\textit{求解区域的左端点}定义的初始数据，采用“前进”的技术，近似值从左侧开始前进。如果在\textit{求解区域两个端点}提供边值数据，则为\textit{边值问题（BVP）}。对于初值问题，对应解总唯一；边值问题具有不同的性质。看一个典型的初值和边值问题：
+
+物体从30\si{\meter}高的建筑抛出，4\si{\second}后落到地面，求抛射体高度。
+
+IVP表示为，
+
+\begin{equation}
+\begin{cases}
+y''=-g \\
+y(0) = 30 \\
+y'(0) = v_0
+\end{cases}
+\end{equation}
+
+BVP表示为，
+
+\begin{equation}
+\begin{cases}
+y'' = -g \\
+y(0) = 30 \\
+y(4) = 0
+\end{cases}
+\end{equation}
+
+\section{差分}
+
+差分运算，相应于微分运算。
+
+将函数在均匀的网格中的某点$ (i+1,n) $对点$ (i,n) $做Taylor展开，有
+
+\begin{equation}
+\phi(i+1,n) = \phi(i,n) + \frac{\partial\phi}{\partial x}|_{i,n}\Delta x +
+\frac{\partial^2\phi}{\partial x^2}|_{i,n}\frac{\Delta x^2}{2!} + ...
+\end{equation}
+
+得，
+
+\begin{equation}
+\frac{\partial\phi}{\partial x}|_{i,n} = 
+\frac{\phi(i+1,n)-\phi(i,n)}{\Delta x} + O(\Delta x)
+\end{equation}
+
+进行有限差分时，使用近似值$ \phi_i^n $代替点$ (i,n) $处的精确值$ \phi(i,n) $得一阶精度的前向差分，
+
+\begin{equation}
+\frac{\partial\phi}{\partial x}|_{i,n} = 
+\frac{\phi_{i+1}^n-\phi_i^n}{\Delta x}
+\end{equation}
+
+类似，一阶精度的后向差分，
+
+\begin{equation}
+\frac{\partial\phi}{\partial x}|_{i,n} = 
+\frac{\phi_i^n-\phi_{i-1}^n}{\Delta x}
+\end{equation}
+
+二阶精度的中心差分，
+
+\begin{equation}
+\frac{\partial\phi}{\partial x}|_{i,n} = 
+\frac{\phi_{i+1}^n-\phi_{i-1}^n}{\Delta x}
+\end{equation}
+
+\section{基本偏微分方程}
+
+
+
+
+
+
+
+
+
+
+
+
+

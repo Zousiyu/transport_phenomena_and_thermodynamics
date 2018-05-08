@@ -5,7 +5,7 @@
 
 比参数：将广延量化为强度量，让其与物质的量无关，方便比较。
 
-\section{状态方程和常见物理量}
+\section{能量传递基本概念和状态方程}
 
 经典理想气体状态方程：
 \begin{equation}
@@ -33,7 +33,7 @@ R_s = c_p - c_v
 \gamma = \frac{c_p}{c_v}
 \end{equation}
 
-热扩散系数(Thermal diffusivity)，其中$ k $为热导率( \si{\watt\per\meter\per\kelvin})，$ \rho $为密度( \si{\kilogram\per\cubic\meter})，$ c_p $为定压比热容(\si{\joule\per\kilogram\per\kelvin})。
+热扩散系数(Thermal diffusivity, \si{\meter\squared\per\second})，其中$ k $为热导率( \si{\watt\per\meter\per\kelvin})，$ \rho $为密度( \si{\kilogram\per\cubic\meter})，$ c_p $为定压比热容(\si{\joule\per\kilogram\per\kelvin})。
 
 \begin{equation}
 \alpha = \frac{k}{\rho c_p}
@@ -43,32 +43,34 @@ R_s = c_p - c_v
 
 \[1\si{\joule} = 1\si{\newton\meter} = \frac{\si{\kilogram\meter\squared}}{\si{\second\squared}} = 1\si{\watt\second} \]
 
+\[1W = 1\si{\joule\per\second}\]
+
 \section{总能量方程}
-能量守恒定义为绝热系统的总能量是一个常数。即总的能量不随时间变化，只能从一种形式转换为另一种形式且不能凭空消失。在CFD里面通常只考虑动能(机械能)和分子内能(内能)。能量守恒可以表示为：
+能量守恒定义为绝热系统的总能量是一个常数。即总的能量不随时间变化，只能从一种形式转换为另一种形式且不能凭空消失。在CFD里面通常只考虑\textit{动能(机械能)}和\textit{分子内能(内能)}。能量守恒可以表示为：
 
 \begin{center}
-\textbf{流体微团内能量的变化率=流入流体微团的净热流量+体积力和表面力对流体微团做功的功率}
+\textbf{流体微团内能量的变化率=流入的净热流量+体积力和表面力对微团做功的功率}
 \end{center}
 
 动能定义为：
 
 \begin{equation}
-K=\frac{1}{2}|\bm{u}|^2
+K=\frac{1}{2}|\mathbf{u}|^2
 \end{equation}
 
-设单位质量的内能定义为：$ E $，流体微团动能和内能总和的时间\textbf{变化率}定义为：
+单位质量的内能定义为：$ E $，流体微团动能和内能总和的时间变化率定义为：
 
 \begin{equation}
 \rho\frac{D(K+E)}{Dt}dxdydz
 \end{equation}
 
-设附加热源为$ Q $，流体微团的净热源为：
+附加热源为$ Q $，流体微团的净热源为：
 
 \begin{equation}
 \rho Qdxdydz
 \end{equation}
 
-设热通量为$ \bm{q}=-k\nabla T $，热传导对流体微团的加热为：
+热通量为$ \bm{q}=-k\nabla T $，热传导对流体微团的加热为：
 
 \begin{equation}
 -\nabla \cdot\bm{q}dxdydz
@@ -81,10 +83,10 @@ K=\frac{1}{2}|\bm{u}|^2
 (-\nabla\cdot(p\bm{u}) + \nabla\cdot(\tau\cdot\bm{u})) dxdydz
 \end{gather}
 
-总能量方程为（非守恒形式）：
+结合上式，总能量方程为（非守恒形式）：
 
 \begin{equation}
-\rho\frac{D(K+E)}{Dt} = \rho Q - \nabla\cdot\bm{q} + \rho\bm{g}\cdot\bm{u} - \nabla\cdot(p\bm{u}) + \nabla\cdot(\tau\cdot\bm{u})
+\rho\frac{D(K+E)}{Dt} =  -\nabla\cdot(p\bm{u}) + \rho Q - \nabla\cdot\bm{q} + \rho\bm{g}\cdot\bm{u} + \nabla\cdot(\tau\cdot\bm{u})
 \end{equation}
 
 总能量方程为（守恒形式）：
@@ -92,6 +94,51 @@ K=\frac{1}{2}|\bm{u}|^2
 \begin{equation}
 \frac{\partial\rho E}{\partial t} + \frac{\partial\rho K}{\partial t} + \nabla\cdot(\rho\bm{u}E) + \nabla\cdot(\rho\bm{u}K) = -\nabla\cdot(p\bm{u}) + \rho Q - \nabla\cdot\bm{q} + \rho\bm{g}\cdot\bm{u} + \nabla\cdot(\tau\cdot\bm{u})
 \end{equation}
+
+\section{内能方程}
+
+抽离动能项后我们能获取一个内能方程。首先，有动量守恒：
+
+\begin{equation}
+\rho \frac{D\mathbf{u}}{Dt} = \nabla\cdot\tau + \rho g + \nabla p
+\end{equation}
+
+将动量方程中的每个速度分量方程乘以速度分量并加和有：
+
+\begin{equation}
+\rho \frac{D \left[\dfrac{1}{2}\left(u_x^2+u_y^2+u_z^2 \right)= K\right]}{Dt}
+=\left(\nabla \cdot \tau \right) \cdot \mathbf{u} + \rho \mathbf{g} \cdot \mathbf{u} -\mathbf{u} \cdot \nabla p
+\end{equation}
+
+与总能量方程相减得到内能方程：
+
+\begin{equation}
+\frac{DE}{Dt}
+=-p\nabla \cdot \mathbf{u}-\nabla\cdot \mathbf{q} + \tau : \nabla \mathbf{u} + \rho Q
+\end{equation}
+
+\section{焓方程}
+
+对于可压缩流体，通常我们把总能量方程简化为焓方程。定义比焓$ h $以及总比焓$ h_0 $：
+
+\[ h = E+\frac{p}{\rho} \]
+\[ h_0 = h+K \]
+
+利用守恒形式的总能量方程可以得到\textit{守恒形式的比焓方程}和\textit{守恒形式的总比焓方程}：
+
+\begin{equation}
+\frac{\partial \rho h}{\partial t}+\nabla \cdot (\rho \mathbf{u} h) + \frac{\partial \rho K}{\partial t}+\nabla \cdot (\rho \mathbf{u} K) =\frac{\partial p}{\partial t}+ \rho Q - \nabla \cdot \mathbf{q} + \rho \mathbf{g} \cdot \mathbf{u}+\nabla \cdot(\tau \cdot \mathbf{u})
+\end{equation}
+
+\begin{equation}
+\frac{\partial \rho h_0}{\partial t}+\nabla \cdot (\rho \mathbf{u} h_0) =\frac{\partial p}{\partial t}+ \rho Q - \nabla \cdot \mathbf{q} + \rho \mathbf{g} \cdot \mathbf{u}+\nabla \cdot(\tau \cdot \mathbf{u})
+\end{equation}
+
+在OpenFOAM的中，传热、可压缩、化学反应求解器求解的主要为\textit{守恒形式的总能量方程和比焓方程}。不可压缩流体常常忽略掉粘性应力耗散和重力做功项。
+
+能量守恒相对于动量守恒要复杂一些。在不可压缩流动中，唯一重要的是内能方程。在考虑传热的情况下，内能要比热能小得多。只要温度对流体的影响不是很重要，那么能量方程可以放在压力速度耦合之后进行求解。在这种情况下是一种单向耦合。
+
+需要注意，内能方程实际上来源于动量方程。但是总能量方程以及焓方程却可以单独推导。在某些情况下求解内能方程可能会带来一些问题。同时，对于不可压缩流体，能量的增加很少见，能量的耗散却比较明显。对于可压缩流，双方都比较重要。
 
 \section{能量传递}
 
@@ -158,6 +205,41 @@ dissipation)之和：
 当密度$\rho$，热容$C_p$，热导率$k$，热源$Q$，边界条件均为常数时，方程是一个线性系统。
 
 \section{Boussinesq近似}
+
+流体总是可压缩的，但如果密度变化对流动整体影响很小，但密度变化与流动有显著的耦合关系（如自然对流），可以只将密度的影响附加到体积力上，而忽略解密度对动量方程其他部分的影响。
+
+流体的密度是压强和温度的函数，流体密度的相对变化可表示为：
+
+\begin{equation}
+\frac{\partial \rho}{\rho} = \frac{1}{\rho}\left(\frac{\partial \rho}{\partial p}\right)_T \delta p + \frac{1}{\rho}\left(\frac{\partial \rho}{\partial T}\right)_p \delta T
+\end{equation}
+
+方程右侧第一项的倒数称为体积弹性模量(\si{\newton\per\meter\squared})，
+
+\[E_v = \rho\left(\frac{\partial p}{\partial \rho}\right)_T\]
+
+热力学上，声速定义为，
+
+\[a=\sqrt{\left(\frac{\partial p}{\partial \rho}\right)_s}\]
+
+根据热力学定理，
+
+\[\left(\frac{\partial p}{\partial \rho}\right)_s = \gamma \left(\frac{\partial p}{\partial \rho}\right)_T\]
+
+对理想气体来说，$ p=\rho RT $，
+
+\begin{equation}
+a = \sqrt{\gamma RT}
+\end{equation}
+
+对液体和固体来说，$ \gamma = 1 $，于是有，
+
+\begin{equation}
+a=\sqrt{\frac{E_v}{\rho}}
+\end{equation}
+
+
+
 为了进行热对流，流体的密度必须时温度的函数$ \rho(T) $，因此我们需要一个状态方程来补充质量、动量、能量方程，密度状态方程为：
 
 \begin{equation}
