@@ -26,6 +26,10 @@
 
 \[\omega_i = \frac{\rho_i}{\rho} =\frac{c_i M_i}{\rho}\]
 
+那么，显然，浓度$ c_i $和质量分数有如下转换关系：
+
+\[ c_i = \frac{n_i}{V} = \frac{m_i}{M_i V} = \frac{\rho_i V}{M_i V} = \frac{\rho\omega_i V}{M_i V} = \frac{\rho\omega_i}{M_i}\]
+
 混合物的等效摩尔质量(\si{\kilogram\per\mole})定义为：
 
 \[ M = \sum M_i x_i \]
@@ -310,21 +314,18 @@ D_e = \frac{\varepsilon}{\tau}D
 
 将Fick定律得通量定义$ N=-D\frac{dc}{dr} $带入式中：
 
-\[ \boxed{\frac{1}{r^2}\frac{-d\left(r^2 \frac{dc}{dt}\right)}{dr} = 0} \]
+\[ \boxed{\frac{1}{r^2}\frac{-d\left(r^2 D\frac{dc}{dr}\right)}{dr} = 0} \]
 
 按微积分基本法则也可展开为：
 
-\[\boxed{D\left(\frac{d^2c}{dr^2} + \frac{2}{r} \frac{dc}{dr}\right) = 0}\]
+\begin{equation}\label{sphere_diffusion}
+\boxed{D\left(\frac{d^2c}{dr^2} + \frac{2}{r} \frac{dc}{dr}\right) = 0}
+\end{equation}
 
 方程的边界条件为：
 
 \[ r=R, c=c_0 \]
 \[ r=0, c=0 \]
-
-\section{浓度边界层}
-
-\section{传质系数}
-
 
 \section{浓物质传递}
 由$i$个物质构成的，有$j$个反应的反应流、浓物质系统的质量守恒方程为：
@@ -519,11 +520,15 @@ k = A \left( \frac{T}{T_{ref}} \right) \exp(-\frac{E}{RT})
 \frac{d\ln p}{dT} = \frac{\Delta H_{vap}}{RT^2}
 \end{equation}
 
+\section{不连续的界面边界条件}
 
+通常情况下，界面处边界条件为固定值或者指定通量。但是，传质比传热更复杂的现象是，在两种材料之间的界面处物质浓度是不连续的，而温度是连续的。举一个熟悉的例子，考虑一个暴露在空气中的水池。如果我们对确定水蒸气传递到空气中的速率感兴趣，界面处的气相浓度应该由Raoult’s law指定，
 
+\[ p_i = x_i p \]
 
+同理，吸收和解析系统应该由Henry’s law确定，
 
-
+\[ x_i = \frac{p_i}{H} \]
 
 
 

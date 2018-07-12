@@ -66,15 +66,17 @@ P\'{e}clet Number，定义为对流传递速率与扩散传递速率之比，$ D
 
 Prandtl Number，定义为动量扩散率和热扩散率之比（也代表流动边界层和热边界层之比），$ k $为导热系数，$ \alpha $为热扩散系数，$ \nu $为动力粘度($ \nu = \mu/\rho $)。$ Pr<1 $时，热边界层比速度边界层厚；$ Pr>1 $，热边界层比速度边界层薄。
 
+气体的$ Pr\approx 1 $，意味着流体中动量和能量传递速率相同；如果流体的$ Pr\ll 1 $（比如液态金属），能量传递比动量传递快；如果流体的$ Pr \gg 1 $（比如油），其能量传递比质量传递慢。这可以理解层热边界层与动量边界层厚度不一致所引起的现象。
+
 \[ Pr = \frac{\mu c_p}{k} = \frac{\mu/\rho}{k/\rho c_p} = \frac{\nu}{\alpha} \]
 
 Schmidt Number，定义为动量扩散率和质量扩散率之比，用于描述同时存在动量和质量扩散过程的流体流动。$ Sc $在质量传递中的作用与$ Pr $在能量传递中的作用类似，物理意义上表示速度边界层与传质边界层的相对厚度。$ Sc<1 $时，传质边界层比速度边界层厚；$ Sc>1 $时，传质边界层比速度边界层薄。
 
-\[ Sc = \frac{\nu}{D} \]
+\[ Sc = \frac{\nu}{D} = \frac{\mu}{\rho D} \]
 
 Lewis Number，定义为热扩散系数与质量扩散系数之比，系统涉及到质量和能量的同时传递：
 
-\[Le = \frac{\alpha}{D}\]
+\[Le = \frac{\alpha}{D} = \frac{Sc}{Pr}\]
 
 Nusselt Number，定义为对流和热传导之比：
 
@@ -107,6 +109,34 @@ Froude number，定义为特征速度和重力波速度之比，用来表征固�
 Weber Number，定义为惯性力和表面张力之比：
 
 \[We=\frac{\rho U^2 L}{\sigma}\]
+
+Stanton number，定义为流入流体的热量与流体的热容量之比，也可以表示为，Nusselt，Reynolds，Prandtl数之比，其用于表征强制对流过程中的传热：
+
+\[ St = \frac{h_h}{Gc_p} = \frac{h_h}{\rho u c_p} = \frac{Nu}{RePr} \]
+
+其中，$ h_h $为对流换热系数(\si{\joule\per\meter\squared\per\kelvin\per\second}=\si{\watt\per\meter\squared\per\kelvin})，$ G $为流体的质量通量(\si{\kg\per\meter\cubed\per\second})。
+
+类比能量传递和质量传递，定义用于质量传递的$ St $数：
+
+\[ St = \frac{h_m}{u} = \frac{Sh}{ReSc} \]
+
+其中，$ h_m $为传质系数(\si{\meter\per\second})
+
+\section{继续讨论无量纲数}
+
+对于平板上的层流边界层而言，动量、能量、质量传递形式一致，
+
+\begin{gather}
+u\cdot \nabla u = \nu \nabla^2 u \\
+u\cdot \nabla T = \alpha \nabla^2 T \\
+u\cdot \nabla C = D \nabla^2 C
+\end{gather}
+
+当$ \nu = D $时，动量边界层和浓度边界层轮廓的将完全一致，将两者的比值定义为无量纲数$ Sc $，类似的，在动量边界层和能量边界层进行对比时，无量纲数$ Pr $的作用与$ Sc $完全一致。
+
+当$ \alpha = D $时，温度边界层和浓度边界层轮廓一致，定义无量纲数$ Le $为
+
+\[ Le = \frac{\alpha}{D} = \frac{Sc}{Pr} \]
 
 \section{常见物理量}
 
@@ -428,6 +458,46 @@ Ref: Heat and Mass Transfer:Fundamentals and Applications(p540)
 
 两者的相对大小通过$ Gr/Re^2 $来表征。如果$ Gr/Re^2 \gg 1 $，惯性力可以忽略不计，自然对流效应占主导地位；如果$ Gr/Re^2 \ll 1 $，浮力可以忽略不计，必须考虑强制对流；如果$ Gr\approx Re^2 $，惯性力和浮力同时存在，必须同时考虑自然对流和强迫对流的影响，在这种情况下，这种流动被称为混合对流。
 
+\subsection{翅片自然对流冷却}
+
+目前对矩形垂直翅片（fin或者pin fin）表面的自然对流现象有大量的研究，通常将翅片间的距离$ S $或者翅片的高度$ L $作为特征长度，自然对流的$ Ra $数定义为：
+
+\begin{gather}
+Ra_S = \frac{g\beta(T_s - T_{\infty})S^3}{\nu^2}Pr \\
+Ra_L = \frac{g\beta(T_s - T_{\infty})L^3}{\nu^2}Pr \\
+Ra_L = Ra_S \frac{L^3}{S^3}
+\end{gather}
+
+在散热过程中，如果平板（翅片）为等温，即$ T_s = constant $，Nusselt数定义如下：
+
+\begin{equation}
+Nu = \frac{hS}{k} = \left[ \frac{576}{(Ra_S S/L)^2} + \frac{2.873}{Ra_S S/L} \right]^{-0.5}
+\end{equation}
+
+这里存在一个散热器翅片排列最优设计的问题，对于给定的基底而言（长宽分别为$ L $和$ W $，详见），是选择具有紧密排列的翅片还是松散排列的翅片。紧密堆积的翅片有更大的传热表面积，但紧密的翅片结构对流体通过会附加额外的阻力，所以传热系数较小；而松散排列的翅片具有较高的传热系数，但换热面积不足。
+
+如果散热过程中翅片等温，且翅片厚度远小于翅片间距，即$ t \ll S $，Bar-Cohen和Rohsenow等人计算出最佳翅片间距为，
+
+\begin{equation}
+S = 2.714 \left( \frac{S^3 L}{Ra_S} \right)^{0.25} = 0.274 \frac{L}{Ra_L^{0.25}}
+\end{equation}
+
+当翅片间距为最优间距时，Nusselt数为，
+
+\[ Nu = \frac{hS}{k} = 1.307 \]
+
+其自然对流换热速率为，
+
+\[ Q=h(2nLH)(T_s-T_{\infty}) \]
+
+其中，$ n=W/(S+t) \approx W/S $为翅片数目，$ T_s $为翅片表面温度，所以的流体属性按简单的加和平均来计算，$ T_{avg} = (T_s+T_{\infty})/2 $
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=10cm]{fin}
+    \caption{fin的尺寸}
+\end{figure}
+
 \section{真空系统}
 真空系统的气体流动需要使用与传统流体流动问题不同的物理方程来描述。在低压环境下，气体分子的平均自由程与系统的尺度相当，气体的稀薄效应变得很重要。通常情况下，稀薄度可以通过克努森数\footnote{\url{https://en.wikipedia.org/wiki/Knudsen_number}}来描述，分辨真空系统中是使用统计力学还是连续介质假设来描述流体流动。
 
@@ -616,7 +686,30 @@ c_F = 0.55 \left( 1-5.5\frac{d}{D_e} \right)
 \rho\left[ \frac{1}{\varepsilon}\frac{\partial \bm{u}}{\partial t} + \frac{1}{\varepsilon}\nabla\left( \frac{\bm{u\cdot u}}{\varepsilon} \right) \right] = -\nabla p + \frac{\mu}{\varepsilon}\nabla^2\bm{u}-\frac{\mu}{\kappa}\bm{u}-\frac{c_F\rho}{\kappa^{1/2}}|\bm{u}|\bm{u}
 \end{equation}
 
-\subsection{填充床的孔隙率}
+\subsection{固定床的压力损失}
+
+通常使用Ergun(1952)和Reichelt(1972)提出的经验关联式来计算压力损失：
+
+\begin{equation}
+\frac{\Delta p}{\Delta x} = f\cdot \frac{1}{2} \rho_f \left( \frac{u}{\varepsilon} \right)^2 \frac{1}{d_p}
+\end{equation}
+
+其中，速度为Darcy速度，$ f $为摩擦因子，定义为：
+
+\begin{equation}
+f = \frac{c_1}{Re_p}+c_2
+\end{equation}
+
+一般的关联中$ c_1=133 $，$ c_2=2.33 $。考虑壁面效应的关联中，摩擦因子定义为：
+
+\begin{multline}
+f = 2A_w\left( \frac{154A_w}{Re_p} + \frac{1}{B_w} \right) \\
+A_w = 1+\frac{2}{3N}(1-\varepsilon) \\
+B_w = \left[ 1.15N^2+0.87 \right] \\
+N = \frac{d_p}{D}
+\end{multline}
+
+\subsection{固定床的孔隙率}
 大量实验表明，填充床的孔隙率是一个阻尼振荡函数，从壁面处$ \varepsilon=1 $振荡变化到$ 5d_p $处接近稳定。可用经验公式描述孔隙率的变化：
 
 \begin{equation}

@@ -33,7 +33,7 @@ R_s = c_p - c_v
 \gamma = \frac{c_p}{c_v}
 \end{equation}
 
-热扩散系数(Thermal diffusivity, \si{\meter\squared\per\second})，其中$ k $为热导率( \si{\watt\per\meter\per\kelvin})，$ \rho $为密度( \si{\kilogram\per\cubic\meter})，$ c_p $为定压比热容(\si{\joule\per\kilogram\per\kelvin})。
+热扩散系数(Thermal diffusivity, \si{\meter\squared\per\second})，其中$ k $为热导率( \si{\watt\per\meter\per\kelvin})，$ \rho $为密度( \si{\kilogram\per\cubic\meter})，$ c_p $为定压比热容(\si{\joule\per\kilogram\per\kelvin})。其用于评估材料导热能力相对于储热能力的大小，$ \alpha $越大，导热能力越强。
 
 \begin{equation}
 \alpha = \frac{k}{\rho c_p}
@@ -44,6 +44,88 @@ R_s = c_p - c_v
 \[1\si{\joule} = 1\si{\newton\meter} = \frac{\si{\kilogram\meter\squared}}{\si{\second\squared}} = 1\si{\watt\second} \]
 
 \[1W = 1\si{\joule\per\second}\]
+
+根据Fourier定律，产热速率$ Q $(\si{\watt}=\si{\joule\per\second})定义为：
+
+\begin{equation}
+Q = \propto A \frac{\partial T}{\partial x}
+\end{equation}
+
+对于材料属性稳定的材料而言，比例系数是恒定的，将其定义为热导率$ k $(\si{\watt\per\meter\per\kelvin})。负号是因为传热的方向与温度梯度相反：
+
+\begin{equation}
+Q = -k A \frac{\partial T}{\partial x}
+\end{equation}
+
+热通量定义为单位面积上的传热速率，$ q $(\si{\watt\per\meter\squared}=\si{\joule\per\meter\squared\second})：
+
+\begin{equation}
+q = \frac{Q}{A}
+\end{equation}
+
+很容易将方程扩展到三维：
+
+\begin{equation}
+q = -k\nabla T
+\end{equation}
+
+通常，我们希望知道物体的温度分布，即温度在介质中随位置是如何变化的。一旦知道了这种分布，就可以用Fourier定律计算介质中任何一点的导热通量。
+
+考虑一个匀质的介质，其温度分布$ T(x,y,z) $使用Cartesian坐标表示，同时，假定介质是静止且不可压缩的。在介质中定义一个无限小的微元控制体，$ dxdydz $。由于物体是静止的，所以不考虑机械能和系统与环境的做功。一旦物体内存在温度梯度，就会发生热传导，如果已知热通量$ q_x $、$ q_y $、$ q_z $，通过Taylor级数展开可以获取相应面的对面的热通量：
+
+\begin{gather}
+q_{x+dx} = q_x + \frac{q_x}{x}dx \\
+q_{y+dy} = q_y + \frac{q_y}{y}dy \\
+q_{z+dz} = q_z + \frac{q_z}{z}dz
+\end{gather}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=12cm]{heat_conduction}
+    \caption{Cartesian坐标系下的微元控制体}
+\end{figure}
+
+考虑介质中可能存在的能量源项，其中$ q_g $为单位体积的能力产生速率，(\si{\watt\per\meter\cubed})：
+
+\begin{equation}
+E_g = q_g dxdydz
+\end{equation}
+
+在介质不发生相变的情况下，不需要考虑潜热，所以介质内能量的变化率为显热(sensible energy)的变化率：
+
+\begin{equation}
+E_{cha} = \frac{\partial U_{sens}}{\partial t} = \rho c_v \frac{\partial T}{\partial t}dxdydz = \rho c_p \frac{\partial T}{\partial t}dxdydz
+\end{equation}
+
+其中，对不可压缩介质来说，定压比热容和定容比热容相等，$ c_v=c_p $。
+
+将上述方程汇总，写出能量守恒的一般形式，
+
+\begin{gather}
+E_{in} - E_{out} + E_g = E_{cha} \\
+q_x + q_y + q_z - q_{x+dx} - q_{y+dy} - q_{z+dz} + q_g dxdydz = \rho c_p \frac{\partial T}{\partial t} dxdydz \\
+-\frac{\partial q_x}{\partial x} -\frac{\partial q_y}{\partial y} -\frac{\partial q_z}{\partial z} + q_g dxdydz = \rho c_p \frac{\partial T}{\partial t} dxdydz
+\end{gather}
+
+考虑材料性质为各向同性，根据Fourier定律来计算热通量：
+
+\begin{gather}
+q_x = -k dydz \frac{\partial T}{\partial x} \\
+q_y = -k dxdz \frac{\partial T}{\partial y} \\
+q_z = -k dxdy \frac{\partial T}{\partial z}
+\end{gather}
+
+将上述方程整合，并在两端除以控制体体积$ dxdydz $：
+
+\begin{equation}
+\frac{\partial}{\partial x}\left(k\frac{\partial T}{\partial x}\right) + \frac{\partial}{\partial y}\left(k\frac{\partial T}{\partial y}\right) + \frac{\partial}{\partial z}\left(k\frac{\partial T}{\partial z}\right) + q_g = \rho c_p \frac{\partial T}{\partial t}
+\end{equation}
+
+为了类比质量扩散方程，定义热扩散系数(thermal diffusivity)为$ \alpha = k/\rho c_p $：
+
+\begin{equation}
+\nabla^2 T + \frac{q_g}{k} = \frac{1}{\alpha} \frac{\partial T}{\partial t}
+\end{equation}
 
 \section{总能量方程}
 能量守恒定义为绝热系统的总能量是一个常数。即总的能量不随时间变化，只能从一种形式转换为另一种形式且不能凭空消失。在CFD里面通常只考虑\textit{动能(机械能)}和\textit{分子内能(内能)}。能量守恒可以表示为：
